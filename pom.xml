@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ynding.cloud</groupId>
+        <artifactId>D-CLOUD</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>D-CLOUD-AUTH</artifactId>
+    <packaging>pom</packaging>
+    <description>cloud 认证模块</description>
+
+    <modules>
+        <module>auth-server-authentication</module>
+        <module>physical-order-meta</module>
+    </modules>
+
+    <repositories>
+        <repository>
+            <id>spring-aliyun</id>
+            <name>Spring Aliyun</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <!--引入github上发布的版本-->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+</project>
