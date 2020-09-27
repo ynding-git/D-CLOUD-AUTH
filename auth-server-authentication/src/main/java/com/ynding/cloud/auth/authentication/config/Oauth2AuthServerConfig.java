@@ -11,7 +11,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
 
@@ -38,11 +39,25 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
     private DataSource dataSource;
 
     /**
-     * tokenStore是进行存取token的接口，默认内存的实现，下面配置jdbc
+     * tokenStore是进行存取token的接口，默认内存的实现还有redis，jdbc，jwt的实现
      */
     @Bean
     public TokenStore tokenStore(){
-        return new JdbcTokenStore(dataSource);
+        //这里配置用jdbc进行存取token
+//        return new JdbcTokenStore(dataSource);
+        //jwt存取token
+        return new JwtTokenStore(jwtTokenEnhancer());
+    }
+
+    /**
+     * 对jwt进行签名的key，jwt是明文，签名防篡改。
+     * 接收token的人需要用同样的key验签名，需要把这个key通过服务暴漏出去，使用服务的人才能拿到key
+     */
+    @Bean
+    public JwtAccessTokenConverter jwtTokenEnhancer() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey("ynding");
+        return converter;
     }
 
     /**
@@ -92,6 +107,8 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
         endpoints
                 //告诉服务器要用自定义的tokenStore里去存取token
                 .tokenStore(tokenStore())
+                //加入jwt需要用到
+                .tokenEnhancer(jwtTokenEnhancer())
                 .authenticationManager(authenticationManager);
     }
 
@@ -104,11 +121,19 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
      */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        /**
-         * 过来验令牌有效性的请求，不是谁都能验的，必须要是经过身份认证的。
-         * 所谓身份认证就是，必须携带clientId，clientSecret，否则随便一请求过来验token是不验的
-         */
-        security.checkTokenAccess("isAuthenticated()");
+
+        security
+                /**
+                 * 过来验令牌有效性的请求，不是谁都能验的，必须要是经过身份认证的。
+                 * 所谓身份认证就是，必须携带clientId，clientSecret，否则随便一请求过来验token是不验的
+                 */
+                .checkTokenAccess("isAuthenticated()")
+                /**
+                 * 暴漏获取jwt签名key的服务，只有经过身份认证的请求才能调（同上）
+                 * 上边 tokenStore里的signKey
+                 */
+                .tokenKeyAccess("isAuthenticated()")
+        ;
     }
 
 }
