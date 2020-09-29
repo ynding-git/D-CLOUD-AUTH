@@ -1,5 +1,4 @@
 
-#存客户端应用
 create table oauth_client_details
 (
     client_id               VARCHAR(256) PRIMARY KEY,
@@ -15,7 +14,6 @@ create table oauth_client_details
     autoapprove             VARCHAR(256)
 );
 
-#存token
 create table oauth_access_token
 (
     token_id          VARCHAR(256),
