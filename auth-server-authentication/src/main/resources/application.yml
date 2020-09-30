@@ -1,5 +1,9 @@
 server:
   port: 10402
+  #配置session失效时间：一个月
+  servlet:
+    session:
+      timeout: 2592000
 
 spring:
   application:
