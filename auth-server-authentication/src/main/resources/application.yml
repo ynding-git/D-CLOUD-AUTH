@@ -32,13 +32,6 @@ spring:
     rest:
       base-path: /api
 
-  sleuth:
-    sampler:
-      probability: 1.0 #采样比例
-    enabled: true
-    http:
-      legacy:
-        enabled: true
 feign:
   httpclient:
     enabled: false

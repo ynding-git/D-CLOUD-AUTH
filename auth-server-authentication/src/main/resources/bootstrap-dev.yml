@@ -34,3 +34,6 @@ spring:
     base-url: http://101.37.202.3:9411
     sender:
       type: rabbit
+  sleuth:
+    sampler:
+      probability: 1.0 #采样比例
