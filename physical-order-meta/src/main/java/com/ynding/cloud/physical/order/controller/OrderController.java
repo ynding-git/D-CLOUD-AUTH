@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/order")
 @Api(value = "Order", tags = {"Order-Controller"})
 public class OrderController {
 
@@ -51,11 +51,11 @@ public class OrderController {
 
     /**
      * 创建订单
+     * 注解生效需在启动类配置@EnableGlobalMethodSecurity(prePostEnabled = true)
+     * @PreAuthorize("#oauth2.hasScope('write')")
      */
-    //注解生效需在启动类配置@EnableGlobalMethodSecurity(prePostEnabled = true)
-    //@PreAuthorize("#oauth2.hasScope('write')")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping
+    @PostMapping("/save")
     public OrderInfo create(@RequestBody OrderInfo info, @AuthenticationPrincipal String username) {
         log.info("获取到username = {}", username);
         //查询价格
