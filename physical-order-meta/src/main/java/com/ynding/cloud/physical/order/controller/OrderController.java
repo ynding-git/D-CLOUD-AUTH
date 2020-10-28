@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -65,9 +64,20 @@ public class OrderController {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
-    public OrderInfo getInfo(@PathVariable Long id, @RequestHeader String username) {
+    public OrderInfo getInfo(@PathVariable Long id, @AuthenticationPrincipal String username) {
         log.info("getInfo: id is " + id + " , and username is " + username);
+        OrderInfo info = new OrderInfo();
+        info.setId(id);
+        info.setProductId(id * 10);
+        return info;
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("get/{id}")
+    public OrderInfo getOrder(@PathVariable Long id) {
+        log.info("getInfo: id is " + id);
         OrderInfo info = new OrderInfo();
         info.setId(id);
         info.setProductId(id * 10);

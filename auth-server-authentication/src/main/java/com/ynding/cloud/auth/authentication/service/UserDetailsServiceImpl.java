@@ -23,6 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+        // TODO 验证用户
         return User.withUsername(username)
                 .password(passwordEncoder.encode("123456"))
                 //权限
