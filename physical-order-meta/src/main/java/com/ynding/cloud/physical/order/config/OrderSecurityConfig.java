@@ -44,6 +44,9 @@ public class OrderSecurityConfig extends ResourceServerConfigurerAdapter {
         return new OAuth2RestTemplate(resource,context);
     }
 
+    /**
+     * 如果不做配置的话，auth2不会做权限控制，经过网管可以访问本服务，其他服务也可以访问，加了配置之后，resource_ids必须包含order-server才可访问本服务。
+     */
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         //配置资源服务器的id，“现在我就是资源服务器 order-server！！！”
