@@ -19,6 +19,9 @@ import java.util.Map;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+/**
+ * @author ynding
+ */
 @RestController
 @RequestMapping("/user")
 @Api(value="User",tags={"User-Controller"})

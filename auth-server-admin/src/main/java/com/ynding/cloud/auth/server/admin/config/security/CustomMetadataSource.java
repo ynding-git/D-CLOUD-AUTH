@@ -34,7 +34,7 @@ public class CustomMetadataSource implements FilterInvocationSecurityMetadataSou
 
                 List<Role> roles = menu.getRoles();
                 List<String> names = roles.stream().map(p -> p.getName()).collect(Collectors.toList());
-                return SecurityConfig.createList((String[])names.toArray());
+                return SecurityConfig.createList(names.toArray(new String[names.size()]));
             }
         }
         //没有匹配上的资源，都是登录访问

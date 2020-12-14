@@ -4,6 +4,9 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * @author ynding
+ */
 public class Md5Util {
 
     public static String stringToMD5(String plainText) {

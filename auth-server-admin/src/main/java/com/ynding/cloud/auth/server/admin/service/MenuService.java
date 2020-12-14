@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * @author ynding
+ */
 @Service
 @Transactional(readOnly = true)
 public class MenuService {

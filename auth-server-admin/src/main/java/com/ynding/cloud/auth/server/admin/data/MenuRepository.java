@@ -12,6 +12,9 @@ import java.util.List;
 @CacheConfig(cacheNames = "menus")
 public interface MenuRepository extends JpaRepository<Menu, Long>, JpaSpecificationExecutor<Menu> {
 
+     /**
+      * 查找所有
+      */
      @Override
      @Cacheable
      List<Menu> findAll();

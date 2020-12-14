@@ -21,6 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import io.swagger.annotations.Api;
 
+/**
+ * @author ynding
+ */
 @RestController
 @Api(value = "RegLogin", tags = {"登录注册-Controller"})
 public class RegLoginController {

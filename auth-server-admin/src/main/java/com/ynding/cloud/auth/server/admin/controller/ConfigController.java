@@ -18,13 +18,14 @@ import java.util.List;
 /**
  * 这是一个只要登录就能访问的Controller
  * 主要用来获取一些配置信息
+ * @author ynding
+ *
  */
 @RestController
 @RequestMapping("/config")
 public class ConfigController {
     @Autowired
     MenuService menuService;
-
     @Autowired
     UserRepository userRepository;
     @Autowired

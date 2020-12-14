@@ -34,6 +34,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+/**
+ * @author ynding
+ */
 @Data
 @Entity
 @ApiModel(value = "Role", description = "角色")

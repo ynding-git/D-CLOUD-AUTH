@@ -26,6 +26,9 @@ import java.util.List;
 
 import static com.ynding.cloud.common.model.bo.ResponseCode.USER_AlREAD_EXIST_EXCEPTION;
 
+/**
+ * @author ynding
+ */
 @Service
 @Transactional(readOnly = true)
 public class UserService implements UserDetailsService {
