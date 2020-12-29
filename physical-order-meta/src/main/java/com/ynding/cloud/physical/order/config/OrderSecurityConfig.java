@@ -1,15 +1,3 @@
-/*
- * The Hefei JingTong RDC(Research and Development Centre) Group.
- * __________________
- *
- *    Copyright 2015-2020
- *    All Rights Reserved.
- *
- *    NOTICE:  All information contained herein is, and remains
- *    the property of JingTong Company and its suppliers,
- *    if any.
- */
-
 package com.ynding.cloud.physical.order.config;
 
 import org.springframework.context.annotation.Bean;
