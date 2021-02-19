@@ -30,7 +30,7 @@ spring:
   # rest 链路前缀
   data:
     rest:
-      base-path: /api
+      base-path: /rest
 
 feign:
   httpclient:

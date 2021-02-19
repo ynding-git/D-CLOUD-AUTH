@@ -26,13 +26,7 @@ spring:
   # rest 链路前缀
   data:
     rest:
-      base-path: /api
-
-  thymeleaf:
-    #开发配置为false,避免修改模板还要重启服务器
-    cache: false
-    #prefix: /WEB-INF/templates/
-    prefix: classpath:/templates/
+      base-path: /rest
 
   sleuth:
     sampler:

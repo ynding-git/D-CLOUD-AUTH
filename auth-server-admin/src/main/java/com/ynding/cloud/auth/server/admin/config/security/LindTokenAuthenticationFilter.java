@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * token过滤
+ * @author ynding
  */
 @Component
 public class LindTokenAuthenticationFilter extends OncePerRequestFilter {

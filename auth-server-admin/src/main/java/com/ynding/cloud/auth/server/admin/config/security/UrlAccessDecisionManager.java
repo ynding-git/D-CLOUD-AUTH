@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * @author ynding
+ */
 @Component
 public class UrlAccessDecisionManager implements AccessDecisionManager {
     @Override
