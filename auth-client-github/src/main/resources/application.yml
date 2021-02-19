@@ -1,9 +1,9 @@
 server:
-  port: 10404
+  port: 10405
 
 spring:
   application:
-    name: physical-order-meta
+    name: auth-client-github
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -35,6 +35,15 @@ spring:
     http:
       legacy:
         enabled: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: 04bea1033228c2e40bde
+            client-secret: 0da386f50b7b156de2ef9ce0d4c532a0d67b068c
+
 feign:
   httpclient:
     enabled: false
@@ -64,15 +73,6 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 10000
-
-security:
-  oauth2:
-    resource:
-      jwt:
-        key-uri: http://localhost:10402/oauth/token_key #获取解析jwt，验签名key的路径
-    client:
-      client-id: orderService #获取验签key需要身份认证，这里是订单的clientId
-      client-secret: 123456 #获取验签key需要身份认证，这里是网关的secret
 
 #这样才能访问 /actuator/bus-refresh
 management:
