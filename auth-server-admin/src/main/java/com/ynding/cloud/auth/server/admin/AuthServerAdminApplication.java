@@ -15,7 +15,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import javax.persistence.EntityManager;
 
 /**
+ * 登录服务
  * @author ynding
+ * @version 2021/02/20
  */
 @SpringBootApplication
 @EnableDiscoveryClient

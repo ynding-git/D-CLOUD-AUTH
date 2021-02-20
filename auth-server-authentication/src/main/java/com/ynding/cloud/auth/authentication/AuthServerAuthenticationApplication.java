@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
+ * 认证服务器
  * @author ynding
  * @version 2020/09/03
  */

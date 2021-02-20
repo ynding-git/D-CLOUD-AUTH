@@ -92,6 +92,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();//禁用security的csrf
 
+        // 将H2数据库控制台设置为可以访问
+        http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
+        // 临时允许同一来源的H2数据库控制台的请求
+        http.headers().frameOptions().sameOrigin();
+
         //带有正确token的可以过滤掉下面的认证
         http
                 .addFilterBefore(lindTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

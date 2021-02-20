@@ -108,7 +108,7 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
     }
 
     /**
-     * ,2，配置用户信息
+     * 2 配置用户信息
      *
      * @param endpoints
      * @throws Exception
