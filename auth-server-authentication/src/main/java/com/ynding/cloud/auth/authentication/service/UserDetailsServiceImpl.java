@@ -1,6 +1,5 @@
 package com.ynding.cloud.auth.authentication.service;
 
-import com.ynding.cloud.auth.authentication.feign.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

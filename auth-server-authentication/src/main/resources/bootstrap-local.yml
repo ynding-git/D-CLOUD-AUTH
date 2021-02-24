@@ -29,11 +29,8 @@ spring:
     port: ${REDIS_PORT:6379}
     lettuce:
       pool:
-        max-active: 200
-        max-idle: 20
-        min-idle: 5
-        max-wait: -1
-    timeout: 200
+        max-active: 300
+    timeout: 2000
   zipkin:
     base-url: http://localhost:9411
     sender:

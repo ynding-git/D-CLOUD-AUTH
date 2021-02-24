@@ -33,7 +33,7 @@ spring:
         max-idle: 20
         min-idle: 5
         max-wait: -1
-    timeout: 200
+    timeout: 2000
   zipkin:
     base-url: http://101.37.202.3:9411
     sender:

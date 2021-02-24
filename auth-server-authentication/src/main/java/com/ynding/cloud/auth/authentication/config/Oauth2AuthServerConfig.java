@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,15 +43,6 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
     private UserDetailsService userDetailsService;
     @Autowired
     private DataSource dataSource;
-
-    /**
-     * redis 连接工厂，session 共享用
-     * @return
-     */
-    @Bean
-    public LettuceConnectionFactory lettuceConnectionFactory(){
-        return new LettuceConnectionFactory();
-    }
 
     /**
      * tokenStore是进行存取token的接口，默认内存的实现还有redis，jdbc，jwt的实现

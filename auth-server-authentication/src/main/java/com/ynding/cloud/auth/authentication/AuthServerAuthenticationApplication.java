@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients
 public class AuthServerAuthenticationApplication {
 
     /**
@@ -33,6 +32,16 @@ public class AuthServerAuthenticationApplication {
     @LoadBalanced
     public RestTemplate restTemplate(RestTemplateBuilder builder){
         return builder.build();
+    }
+
+    /**
+     * 配置在config类里报错循环依赖
+     * redis 连接工厂，session 共享用
+     * @return
+     */
+    @Bean
+    public LettuceConnectionFactory lettuceConnectionFactory(){
+        return new LettuceConnectionFactory();
     }
 
     public static void main(String[] args) {

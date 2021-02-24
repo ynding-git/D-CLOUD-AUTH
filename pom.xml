@@ -16,7 +16,6 @@
 
     <modules>
         <module>auth-client-github</module>
-        <module>auth-server-admin</module>
         <module>auth-server-authentication</module>
         <module>physical-order-meta</module>
     </modules>
