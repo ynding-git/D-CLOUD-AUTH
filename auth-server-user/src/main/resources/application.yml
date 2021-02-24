@@ -1,9 +1,9 @@
 server:
-  port: 10404
+  port: 10403
 
 spring:
   application:
-    name: physical-order-meta
+    name: auth-server-admin
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -26,7 +26,7 @@ spring:
   # rest 链路前缀
   data:
     rest:
-      base-path: /api
+      base-path: /rest
 
   sleuth:
     sampler:
@@ -70,8 +70,9 @@ security:
     resource:
       jwt:
         key-uri: http://localhost:10402/oauth/token_key #获取解析jwt，验签名key的路径
+        key-value: ynding
     client:
-      client-id: orderService #获取验签key需要身份认证，这里是订单的clientId
+      client-id: admin #获取验签key需要身份认证，这里是订单的clientId
       client-secret: 123456 #获取验签key需要身份认证，这里是网关的secret
 
 #这样才能访问 /actuator/bus-refresh
@@ -88,6 +89,6 @@ management:
       show-details: always #展示健康信息的细节
 logging:
   level:
-    com.ynding.cloud.physical.order: debug
+    com.ynding.cloud.book: debug
     org.hibernate.SQL: WARN
     org.springframework.web: WARN

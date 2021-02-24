@@ -15,6 +15,7 @@
     <description>cloud 认证模块</description>
 
     <modules>
+        <module>auth-client-github</module>
         <module>auth-server-admin</module>
         <module>auth-server-authentication</module>
         <module>physical-order-meta</module>

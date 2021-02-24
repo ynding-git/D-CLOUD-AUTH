@@ -1,5 +1,6 @@
 package com.ynding.cloud.auth.authentication.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -17,14 +18,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author ynding
  * @version 2020/9/9
  **/
+@Slf4j
 @Configuration
 @EnableWebSecurity
 public class Oauth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Qualifier("userDetailsServiceImpl")
     @Autowired
-    private UserDetailsService userDetailsService;
-
+    UserDetailsService userDetailsService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -32,9 +33,6 @@ public class Oauth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * AuthenticationManagerBuilder 是用来构建  AuthenticationManager（处理登录操作）的
      * 需要两个东西：userDetailsService  、passwordEncoder
-     *
-     * @param auth
-     * @throws Exception
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -46,9 +44,6 @@ public class Oauth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 把AuthenticationManager暴露为bean
-     *
-     * @return
-     * @throws Exception
      */
     @Bean
     @Override

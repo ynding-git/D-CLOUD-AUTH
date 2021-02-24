@@ -1,10 +1,12 @@
 package com.ynding.cloud.auth.authentication.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -35,9 +37,11 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Qualifier("userDetailsServiceImpl")
+    @Autowired
+    private UserDetailsService userDetailsService;
     @Autowired
     private DataSource dataSource;
 
@@ -46,7 +50,7 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
      * @return
      */
     @Bean
-    public LettuceConnectionFactory connectionFactory(){
+    public LettuceConnectionFactory lettuceConnectionFactory(){
         return new LettuceConnectionFactory();
     }
 
@@ -121,7 +125,11 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
                 .tokenStore(tokenStore())
                 //加入jwt需要用到
                 .tokenEnhancer(jwtTokenEnhancer())
-                .authenticationManager(authenticationManager);
+                // 支持 password 模式
+                .authenticationManager(authenticationManager)
+                //这里指定userDetailsService是专门给refresh_token用的，其他的四种授权模式不需要这个
+                .userDetailsService(userDetailsService)
+        ;
     }
 
 

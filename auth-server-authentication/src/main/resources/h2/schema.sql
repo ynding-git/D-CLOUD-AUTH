@@ -1,4 +1,6 @@
--- 存客户端应用 --
+-- ----------------------------
+-- 存客户端应用
+-- ----------------------------
 DROP TABLE IF EXISTS `oauth_client_details`;
 create table oauth_client_details
 (
@@ -15,7 +17,9 @@ create table oauth_client_details
     autoapprove             VARCHAR(256)
 );
 
--- 存token --
+-- ----------------------------
+-- 存token
+-- ----------------------------
 DROP TABLE IF EXISTS `oauth_access_token`;
 create table oauth_access_token
 (
