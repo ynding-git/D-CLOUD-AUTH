@@ -21,9 +21,9 @@ INSERT INTO `user` VALUES ('5', '丁', '18568123489', '029-82123434', '海口美
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', 'ROLE_manager', '部门经理');
-INSERT INTO `role` VALUES ('6', 'ROLE_admin', '系统管理员');
-INSERT INTO `role` VALUES ('13', 'ROLE_test2', '测试角色2');
+INSERT INTO `role` VALUES ('1', 'ROLE_MANAGER', '部门经理');
+INSERT INTO `role` VALUES ('6', 'ROLE_ADMIN', '系统管理员');
+INSERT INTO `role` VALUES ('13', 'ROLE_TEST', '测试角色');
 
 -- ----------------------------
 -- Records of hr_role

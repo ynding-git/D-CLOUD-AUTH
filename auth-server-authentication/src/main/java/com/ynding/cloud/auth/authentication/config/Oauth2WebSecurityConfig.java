@@ -87,6 +87,9 @@ public class Oauth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    /**
+     * HttpSecurity是WebSecurity的一部分
+     */
     @Override
     public void configure(WebSecurity web) throws Exception {
         //不做拦截的路径
@@ -103,17 +106,17 @@ public class Oauth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-
         http.csrf().disable();//禁用security的csrf
 
         // 将H2数据库控制台设置为可以访问
-        http.authorizeRequests().antMatchers("/h2-console/**","/loadUserByUsername").permitAll();
+        http.authorizeRequests().antMatchers("/h2-console/**", "/lind-auth/**",
+                "/login", "/**/register")
+                .permitAll();
         // 临时允许同一来源的H2数据库控制台的请求
         http.headers().frameOptions().sameOrigin();
 
         //带有正确token的可以过滤掉下面的认证
-        http
-                .addFilterBefore(lindTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(lindTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         //任何请求会跳到登录界面
         http
@@ -130,7 +133,6 @@ public class Oauth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         return o;
                     }
                 })
-                .antMatchers("/lind-auth/**", "/login", "/resources/**", "/index.html", "/**/register").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login_p")//登录页
                 .loginProcessingUrl("/login")//登录提交的处理Url

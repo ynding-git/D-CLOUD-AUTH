@@ -6,8 +6,10 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -57,8 +59,12 @@ public class OrderController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("get/{id}")
-    public OrderInfo getOrder(@PathVariable Long id) {
+    public OrderInfo getOrder(@PathVariable Long id, Authentication authentication) {
         log.info("getInfo: id is " + id);
+        authentication.getCredentials();
+        OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails)authentication.getDetails();
+        String token = details.getTokenValue();
+        log.info("token:{}",token);
         OrderInfo info = new OrderInfo();
         info.setId(id);
         info.setProductId(id * 10);

@@ -5,6 +5,7 @@ import com.ynding.cloud.auth.authentication.service.UserService;
 import com.ynding.cloud.auth.authentication.utils.Md5Util;
 import com.ynding.cloud.common.model.bo.ResponseBean;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -16,13 +17,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -68,23 +70,24 @@ public class RegLoginController {
         return m;
     }
 
-    @GetMapping("/login")
-    public ResponseBean testToke(@AuthenticationPrincipal String username, Authentication authentication) {
-        log.info("getInfo: username is " + username);
-        authentication.getCredentials();
-        OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
-        String jwtToken = details.getTokenValue();
-        log.info("token:{}", jwtToken);
-        return ResponseBean.ok(username);
-    }
-
     @PostMapping("/login")
+    @ApiOperation(value = "登录", produces = "application/json")
     public ResponseBean refreshAndGetAuthenticationToken(
             @RequestBody User user) throws AuthenticationException {
 
         String username = user.getUsername();
         String password = user.getPassword();
         return ResponseBean.ok(getToken(username, password));
+    }
+
+    @PostMapping("/register")
+    @ApiOperation(value = "注册", produces = "application/json")
+    public ResponseBean register(
+            @RequestBody User user) throws AuthenticationException {
+
+        String username = user.getUsername();
+        String password = user.getPassword();
+        return userService.userReg(username,password);
     }
 
 
@@ -125,7 +128,7 @@ public class RegLoginController {
         // 持久化的redis
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(clientId, clientSecret);
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         // 设置请求体
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("username", username);
