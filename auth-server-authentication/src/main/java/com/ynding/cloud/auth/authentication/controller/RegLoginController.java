@@ -1,5 +1,6 @@
 package com.ynding.cloud.auth.authentication.controller;
 
+import com.ynding.cloud.auth.authentication.domin.AccessToken;
 import com.ynding.cloud.auth.authentication.entity.User;
 import com.ynding.cloud.auth.authentication.service.UserService;
 import com.ynding.cloud.auth.authentication.utils.Md5Util;
@@ -9,10 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -50,18 +48,6 @@ public class RegLoginController {
      */
     private final static String tokenHead = "Bearer ";
 
-    /**
-     * 获取token的url
-     */
-    private final static String tokenUrl = "http://localhost:10402/oauth/token";
-    /**
-     * 客户端id（用于获取token）
-     */
-    private final static String clientId = "admin";
-    /**
-     * 客户端secret（用于获取token）
-     */
-    private final static String clientSecret = "123456";
 
     @RequestMapping("/login_p")
     public ModelAndView login(ModelAndView m) {
@@ -77,7 +63,7 @@ public class RegLoginController {
 
         String username = user.getUsername();
         String password = user.getPassword();
-        return ResponseBean.ok(getToken(username, password));
+        return ResponseBean.ok(generateToken(username, password));
     }
 
     @PostMapping("/register")
@@ -112,13 +98,16 @@ public class RegLoginController {
     }
 
     /**
-     * 获取token
+     * 获取token（不可用）
      *
      * @param username .
      * @param password .
      * @return
      */
     private String getToken(String username, String password) {
+        //获取token的url
+        String tokenUrl = "http://localhost:10402/oauth/token";
+
         UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username, password);
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(upToken);
@@ -127,7 +116,7 @@ public class RegLoginController {
         final UserDetails userDetails = userService.loadUserByUsername(username);
         // 持久化的redis
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(clientId, clientSecret);
+        headers.setBasicAuth("admin", "123456");
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         // 设置请求体
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -137,8 +126,8 @@ public class RegLoginController {
         map.add("scope", "read write");
         // 用HttpEntity封装整个请求报文
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(tokenUrl, request, String.class);
-        String token = response.getBody();
+        ResponseEntity<AccessToken> response = restTemplate.exchange(tokenUrl, HttpMethod.POST, request, AccessToken.class);
+        String token = response.getBody().getAccess_token();
         redisTemplate.opsForValue().set(token, userDetails.getUsername());
         return token;
     }

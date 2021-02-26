@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.ToString;
 import org.omg.CORBA.ServerRequest;
 
 import javax.persistence.*;
@@ -18,8 +17,9 @@ import java.util.List;
 @Data
 @Entity
 @ApiModel(value = "Role", description = "角色")
-@ToString
 public class Role implements Serializable {
+    private static final long serialVersionUID = -468757998841307266L;
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @ApiModelProperty(name = "id", notes = "ID", dataType = "long")

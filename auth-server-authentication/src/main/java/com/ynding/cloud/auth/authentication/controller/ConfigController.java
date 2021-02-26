@@ -4,7 +4,6 @@ package com.ynding.cloud.auth.authentication.controller;
 import com.ynding.cloud.auth.authentication.data.MenuRepository;
 import com.ynding.cloud.auth.authentication.data.UserRepository;
 import com.ynding.cloud.auth.authentication.entity.Menu;
-import com.ynding.cloud.auth.authentication.entity.User;
 import com.ynding.cloud.auth.authentication.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,7 +37,7 @@ public class ConfigController {
     }
 
     @GetMapping("/user")
-    public User currentUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public Object currentUser() {
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

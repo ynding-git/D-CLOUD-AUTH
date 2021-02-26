@@ -8,15 +8,20 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * 认证服务器
+ * 认证服务器（另外把它注册为资源服务器，以便可以调用其中的接口，否则报403 Forbidden错误，无法调用其中的资源）
+ * 意思是从认证服务器获取的token可以有权限调取对应资源服务器的资源，认证服务器除外，除非加上@EnableResourceServer
  * @author ynding
  * @version 2020/09/03
  */
 @SpringBootApplication
 @EnableDiscoveryClient
+@EnableResourceServer
+@EnableAuthorizationServer
 public class AuthServerAuthenticationApplication {
 
     /**

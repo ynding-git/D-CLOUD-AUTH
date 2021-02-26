@@ -133,14 +133,14 @@ public class Oauth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         return o;
                     }
                 })
-                .anyRequest().authenticated()
-                .and().formLogin().loginPage("/login_p")//登录页
-                .loginProcessingUrl("/login")//登录提交的处理Url
-                .successHandler(loginSuccessHandler())
-                .failureHandler(authenticationFailureHandler())
-                .permitAll()//允许所有用户都有权限访问登录页面
-                .and().logout().permitAll().logoutSuccessHandler(logoutSuccessHandler())
-                .and().exceptionHandling().accessDeniedHandler(deniedHandler)
+//                .anyRequest().authenticated()
+//                .and().formLogin().loginPage("/login_p")//登录页
+//                .loginProcessingUrl("/login")//登录提交的处理Url
+//                .successHandler(loginSuccessHandler())
+//                .failureHandler(authenticationFailureHandler())
+//                .permitAll()//允许所有用户都有权限访问登录页面
+//                .and().logout().permitAll().logoutSuccessHandler(logoutSuccessHandler())
+//                .and().exceptionHandling().accessDeniedHandler(deniedHandler)
         ;
 
         http.headers().cacheControl();// 禁用缓存

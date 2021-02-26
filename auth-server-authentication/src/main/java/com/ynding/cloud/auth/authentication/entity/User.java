@@ -28,8 +28,9 @@ import java.util.List;
 @ApiModel(value = "User", description = "用户")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class User implements UserDetails, Principal, Serializable {
+
+    private static final long serialVersionUID = -7115270038333293479L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
