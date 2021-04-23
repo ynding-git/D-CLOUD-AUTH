@@ -35,7 +35,8 @@ spring:
         max-wait: -1
     timeout: 2000
   zipkin:
-    base-url: http://101.37.202.3:9411
+#    base-url: http://101.37.202.3:9411
+    enabled: true
     sender:
       type: rabbit
   sleuth:

@@ -27,5 +27,6 @@ spring:
 
   zipkin:
     base-url: http://101.37.202.3:9411
+    enabled: true
     sender:
       type: rabbit
