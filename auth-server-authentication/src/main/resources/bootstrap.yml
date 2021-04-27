@@ -28,7 +28,7 @@ spring:
     host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:6380}
     password: ${REDIS_PASSWORD:123456}
-    lettuce:
+    jedis:
       pool:
         ##最大连接数
         max-active: 300
@@ -37,8 +37,6 @@ spring:
         ##最大和最小空闲连接
         max-idle: 4
         min-idle: 0
-      #关闭时的超时时间
-      shutdown-timeout: 4000
     ##连接超时的时间
     timeout: 2000
   zipkin:

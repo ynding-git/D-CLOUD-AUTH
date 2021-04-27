@@ -6,15 +6,13 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -34,56 +32,20 @@ import java.time.Duration;
 @EnableRedisHttpSession
 public class RedisConfig {
 
-    /**
-     * cache的数据库索引
-     */
-    @Value("${redis.cache.database}")
-    private Integer cacheDatabaseIndex;
-    /**
-     * sessiondb的数据库索引
-     */
-    @Value("${redis.session.database}")
-    private Integer sessionDatabaseIndex;
-
-    @Value("${spring.redis.host}")
-    private String host;
-
-    @Value("${spring.redis.port}")
-    private int port;
-
-    @Value("${spring.redis.password}")
-    private String password;
-
-    @Value("${spring.redis.lettuce.pool.max-idle}")
-    private Integer maxIdle;
-
-    @Value("${spring.redis.lettuce.pool.min-idle}")
-    private Integer minIdle;
-
-    @Value("${spring.redis.lettuce.pool.max-active}")
-    private Integer maxActive;
-
-    @Value("${spring.redis.lettuce.pool.max-wait}")
-    private Long maxWait;
-
-    @Value("${spring.redis.timeout}")
-    private Long timeout;
-
-    @Value("${spring.redis.lettuce.shutdown-timeout}")
-    private Long shutdownTimeOut;
+    @Autowired
+    private RedisProperties redisProperties;
 
     @Bean
-    public RedisConnectionFactory lettuceConnectionFactory() {
-        LettuceConnectionFactory lettuceConnectionFactory = createLettuceConnectionFactory(cacheDatabaseIndex, host,
-                port, password, maxIdle, minIdle, maxActive, maxWait, timeout, shutdownTimeOut);
-        return lettuceConnectionFactory;
+    public RedisConnectionFactory jedisConnectionFactory() {
+        JedisConnectionFactory jedisConnectionFactory = createJedisConnectionFactory(redisProperties);
+        return jedisConnectionFactory;
     }
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
 
         RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(lettuceConnectionFactory());
+        template.setConnectionFactory(jedisConnectionFactory());
         //使用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值
         Jackson2JsonRedisSerializer<Object> redisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper mapper = new ObjectMapper();
@@ -103,45 +65,42 @@ public class RedisConfig {
     public StringRedisTemplate stringRedisTemplate() {
         //创建客户端连接
         StringRedisTemplate template = new StringRedisTemplate();
-        template.setConnectionFactory(lettuceConnectionFactory());
+        template.setConnectionFactory(jedisConnectionFactory());
         return template;
     }
 
 
     /**
-     * 自定义LettuceConnectionFactory,这一步的作用就是返回根据你传入参数而配置的LettuceConnectionFactory，
-     * 这里定义的方法 createLettuceConnectionFactory，方便快速使用
+     * 自定义JedisConnectionFactory,这一步的作用就是返回根据你传入参数而配置的LettuceConnectionFactory，
+     * 这里定义的方法 createJedisConnectionFactory，方便快速使用
      */
-    private LettuceConnectionFactory createLettuceConnectionFactory(int dbIndex, String hostName, int port, String password,
-                                                                    int maxIdle, int minIdle, int maxActive, Long maxWait,
-                                                                    Long timeOut, Long shutdownTimeOut) {
+    private JedisConnectionFactory createJedisConnectionFactory(RedisProperties redisProperties) {
 
         //redis配置
-        RedisConfiguration redisConfiguration = new RedisStandaloneConfiguration(hostName, port);
-        ((RedisStandaloneConfiguration) redisConfiguration).setDatabase(dbIndex);
-        ((RedisStandaloneConfiguration) redisConfiguration).setPassword(password);
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(redisProperties.getHost(), redisProperties.getPort());
+        redisStandaloneConfiguration.setDatabase(redisProperties.getCacheDatabaseIndex());
+        redisStandaloneConfiguration.setPassword(redisProperties.getPassword());
 
         //连接池配置
         GenericObjectPoolConfig genericObjectPoolConfig = new GenericObjectPoolConfig();
-        genericObjectPoolConfig.setMaxIdle(maxIdle);
-        genericObjectPoolConfig.setMinIdle(minIdle);
-        genericObjectPoolConfig.setMaxTotal(maxActive);
-        genericObjectPoolConfig.setMaxWaitMillis(maxWait);
+        genericObjectPoolConfig.setMaxIdle(redisProperties.getMaxIdle());
+        genericObjectPoolConfig.setMinIdle(redisProperties.getMinIdle());
+        genericObjectPoolConfig.setMaxTotal(redisProperties.getMaxActive());
+        genericObjectPoolConfig.setMaxWaitMillis(redisProperties.getMaxWait());
 
         //redis客户端配置
-        LettucePoolingClientConfiguration.LettucePoolingClientConfigurationBuilder builder =
-                LettucePoolingClientConfiguration.builder().commandTimeout(Duration.ofMillis(timeOut));
-
-        builder.shutdownTimeout(Duration.ofMillis(shutdownTimeOut));
+        JedisClientConfiguration.JedisPoolingClientConfigurationBuilder builder =
+                JedisClientConfiguration.builder().usePooling();
         builder.poolConfig(genericObjectPoolConfig);
-        LettuceClientConfiguration lettuceClientConfiguration = builder.build();
+        builder.and().connectTimeout((Duration.ofMillis(redisProperties.getTimeout())));
+        JedisClientConfiguration jedisClientConfiguration = builder.build();
 
         //根据配置和客户端配置创建连接
-        LettuceConnectionFactory lettuceConnectionFactory = new
-                LettuceConnectionFactory(redisConfiguration, lettuceClientConfiguration);
-        lettuceConnectionFactory.afterPropertiesSet();
+        JedisConnectionFactory jedisConnectionFactory = new
+                JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfiguration);
+        jedisConnectionFactory.afterPropertiesSet();
 
-        return lettuceConnectionFactory;
+        return jedisConnectionFactory;
     }
 
 }
