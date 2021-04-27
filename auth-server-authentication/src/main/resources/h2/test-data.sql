@@ -22,7 +22,7 @@ INSERT INTO `user` VALUES ('5', '丁', '18568123489', '029-82123434', '海口美
 -- Records of role
 -- ----------------------------
 INSERT INTO `role` VALUES ('1', 'ROLE_MANAGER', '部门经理');
-INSERT INTO `role` VALUES ('6', 'ROLE_admin', '系统管理员');
+INSERT INTO `role` VALUES ('6', 'ROLE_ADMIN', '系统管理员');
 INSERT INTO `role` VALUES ('13', 'ROLE_TEST', '测试角色');
 
 -- ----------------------------
@@ -41,6 +41,7 @@ INSERT INTO `menu` VALUES ('5', '/system/cfg/**', '/sys/cfg', 'SysCfg', '系统�
 INSERT INTO `menu` VALUES ('6', '/system/init/**', '/sys/init', 'SysInit', '初始化数据库', null, null, '1', '3', '1');
 INSERT INTO `menu` VALUES ('7', '/book/**', '/book', 'book', '书本', null, null, '1', '4', '1');
 INSERT INTO `menu` VALUES ('8', '/config/user', '/user', 'user', '当前用户', null, null, '1', '4', '1');
+INSERT INTO `menu` VALUES ('9', '/order/**', '/order', 'order', '订单', null, null, '1', '4', '1');
 
 -- ----------------------------
 -- Records of menu_role
@@ -53,6 +54,7 @@ INSERT INTO `menu_role` VALUES ('166', '5', '6');
 INSERT INTO `menu_role` VALUES ('167', '6', '6');
 INSERT INTO `menu_role` VALUES ('168', '7', '6');
 INSERT INTO `menu_role` VALUES ('169', '8', '6');
+INSERT INTO `menu_role` VALUES ('170', '9', '6');
 INSERT INTO `menu_role` VALUES ('256', '1', '1');
 INSERT INTO `menu_role` VALUES ('257', '2', '1');
 INSERT INTO `menu_role` VALUES ('258', '3', '1');
@@ -61,3 +63,4 @@ INSERT INTO `menu_role` VALUES ('260', '5', '1');
 INSERT INTO `menu_role` VALUES ('261', '6', '1');
 INSERT INTO `menu_role` VALUES ('262', '7', '1');
 INSERT INTO `menu_role` VALUES ('263', '8', '1');
+INSERT INTO `menu_role` VALUES ('264', '9', '1');

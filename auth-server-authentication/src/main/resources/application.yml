@@ -31,9 +31,6 @@ spring:
   data:
     rest:
       base-path: /rest
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6380}
 feign:
   httpclient:
     enabled: false
