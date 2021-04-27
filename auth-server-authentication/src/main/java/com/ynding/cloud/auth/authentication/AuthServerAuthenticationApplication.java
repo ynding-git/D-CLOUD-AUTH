@@ -6,7 +6,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -44,10 +43,10 @@ public class AuthServerAuthenticationApplication {
      * redis 连接工厂，session 共享用
      * @return
      */
-    @Bean
-    public LettuceConnectionFactory lettuceConnectionFactory(){
-        return new LettuceConnectionFactory();
-    }
+//    @Bean
+//    public LettuceConnectionFactory lettuceConnectionFactory(){
+//        return new LettuceConnectionFactory();
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(AuthServerAuthenticationApplication.class, args);

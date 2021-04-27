@@ -31,7 +31,9 @@ spring:
   data:
     rest:
       base-path: /rest
-
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6380}
 feign:
   httpclient:
     enabled: false
@@ -76,6 +78,6 @@ management:
       show-details: always #展示健康信息的细节
 logging:
   level:
-    com.ynding.cloud.book: debug
+    com.ynding.cloud: debug
     org.hibernate.SQL: WARN
     org.springframework.web: WARN
